@@ -1,0 +1,165 @@
+<div class="row main-nav">
+	<nav class="col">
+		<ul>
+			<li class="selected"><span>Workload</span></li>
+		{{#ifCheckRole 'admin' role}}
+			<li class="mb-1 ml-1 bg-light"><button type="button" class="btn btn-xs btn-success btn-sync" data-toggle="tooltip" data-placement="top" title="Sync data from Redmine"><span class="oi mr-1" data-glyph="reload"></span>Sync data</button></li>
+		{{/ifCheckRole}}
+		</ul>
+		<span class="font-weight-normal">Last sync: <strong class="text-danger">{{workload.lastSync}}</strong></span>
+	</nav>
+</div>
+<main class="position-relative">
+	<div class="group-tool py-3">
+		<form action="/workload" method="GET" id="search-from-to" onsubmit="return(applySearchFromTo());">
+			<div class="input-group input-group-sm input-group-picker mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text bg-white">From</span>
+				</div>
+				<input type="text" class="form-control form-control-sm mw-90" data-picker="form-date" name="from" onblur="onChangeFromTo()" autocomplete="off" value="{{from}}"/>
+				<div class="input-group-prepend input-group-append">
+					<span class="input-group-text bg-white">To</span>
+				</div>
+				<input type="text" class="form-control form-control-sm mw-90" data-picker="to-date" name="to" onblur="onChangeFromTo()" autocomplete="off" value="{{to}}"/>
+				<div class="input-group-append">
+					<button class="btn btn-info" type="submit" id="button-addon2">Apply</button>
+				</div>
+				<span class="pt-1 ml-3">Working hours: {{workload.working_hours}}</span>
+			</div>
+		</form>
+		<div class="fieldset mw-255 group-status">
+			<h4><span>Workload status</span></h4>
+			<table class="txt-small w-100 mw-240 border-separate">
+				<colgroup>
+					<col style="width: 30%">
+					<col style="width: 70%">
+				</colgroup>
+				<tbody>
+					<tr class="bg-white">
+						<th class="text-center wl-available px-2">Available</th>
+						<td class="text-left no-break px-2">Workload < 50%</td>
+					</tr>
+					<tr class="bg-white">
+						<th class="text-center wl-normal px-2">Normal</th>
+						<td class="text-left no-break px-2">50 <= Workload <= 100%</td>
+					</tr>
+					<tr class="bg-white">
+						<th  class="text-center wl-overload px-2">Overload</th>
+						<td class="text-left no-break px-2">Workload > 100%</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="fieldset mw-660 height-50 hidden">
+			<h4><span>Filter</span></h4>
+			<div class="form-project">
+				<label for="multi-project" class="col-form-label">Project:</label>
+				<select class="multi-select" multiple="multiple" id="multi-project">
+				{{#each workload.projects}}
+					<option value="{{this.no}}-{{this.project_id}}">{{{this.filter_name}}}</option>
+				{{/each}}
+				</select>
+			</div>
+		</div>
+	</div>
+
+	<div class="js-sticky-table">
+
+		<table class="datatable-wl datatable-hover table-sticky table-sticky-striped txt-small w-100">
+			<thead>
+				<tr class="sticky-row none-th">
+					<th class="text-right sticky-cell" colspan="5">Plan time (Total)</th>
+				{{#each workload.projects}}
+					<th class="text-center">{{this.plan_time}}</th>
+				{{/each}}
+				</tr>
+				<tr class="sticky-row none-th">
+					<th class="text-right sticky-cell" colspan="5">Real time (Total)</th>
+				{{#each workload.projects}}
+					<th class="text-center no-break {{this.class_color}}">{{this.real_time}}</th>
+				{{/each}}
+				</tr>
+				<tr class="sticky-row none-th">
+					<th class="text-right sticky-cell" colspan="5">Real time ({{from}} ~ {{to}})</th>
+				{{#each workload.projects}}
+					<th class="text-center no-break">{{this.real_time_from_to}}</th>
+				{{/each}}
+				</tr>
+				<tr class="sticky-row">
+					<th class="sticky-cell no-break" scope="col">No.</th>
+					<th class="sticky-cell no-break" scope="col">Fullname</th>
+					<th class="sticky-cell no-break" scope="col">Workload (%)</th>
+					<th class="sticky-cell no-break" scope="col">Real time</th>
+					<th class="sticky-cell no-break" scope="col">Working hour</th>
+				{{#each workload.projects}}
+					<th class="project-name no-break" scope="col"><a
+							href="/project-detail/{{this.project_id}}.html">{{this.project_name}}</a></th>
+				{{/each}}
+				</tr>
+
+			</thead>
+			<tbody>
+			{{#each workload.users}}
+				<tr class="{{this.class_color}} row-users user-{{this.id_user}}" user-id="{{this.id_user}}">
+					<td class="text-center sticky-cell">{{this.no}}</td>
+					<td class="sticky-cell no-break"><a href="/user-detail/{{this.id_user}}">{{this.username}}</a></td>
+					<td class="text-center sticky-cell">{{this.workload}}</td>
+					<td class="text-center sticky-cell">{{this.sum_real_time}}</td>
+					<td class="text-center sticky-cell">{{this.working_hour}}</td>
+				{{#each this.projects}}
+					<td class="text-center">{{this.real_time}}</td>
+				{{/each}}
+				</tr>
+			{{/each}}
+			</tbody>
+		</table>
+	</div>
+</main>
+
+<!-- modal -->
+<div class="modal fade p-0" id="errorFromTo" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header py-2">
+				<h5 class="modal-title"><span class="oi mr-1" data-glyph="warning"></span>Warning</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body py-4">From-To not more than 24 months</div>
+			<div class="modal-footer py-2">
+				<button type="button" class="btn btn-sm btn-primary btn-confirm-del" data-dismiss="modal"><span class="oi mr-1" data-glyph="check"></span>OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	function applySearchFromTo() {
+		var from = $('input[name="from"]').val();
+		var to = $('input[name="to"]').val();
+		var start = new Date(from);
+		var end = new Date(to);
+		var startYear = start.getFullYear();
+		var startTowYear = start.setFullYear(startYear + 2);
+		if (end.getTime() > startTowYear) {
+			$("#errorFromTo").modal();
+			return false;
+		}
+		$(".loading").css('display', 'block');
+		return true;
+	}
+
+	function onChangeFromTo() {
+		var from = $('input[name="from"]').val();
+		var to = $('input[name="to"]').val();
+		var start = new Date(from);
+		var end = new Date(to);
+		var startYear = start.getFullYear();
+		var startTowYear = start.setFullYear(startYear + 2);
+		if (end.getTime() > startTowYear) {
+			$("#errorFromTo").modal();
+		}
+	}
+
+</script>

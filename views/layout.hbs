@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{> header}}
+
+<body>
+<div class="loading"></div>
+<div class="container-fluid">
+	<div class="row top-nav">
+		<nav class="col global-nav">
+			<ul>
+			{{#ifCheckRole 'pm' role}}
+				<li><a href="/workload">Workload</a></li>
+			{{/ifCheckRole}}
+			{{#ifCheckRole 'admin' role}}
+				<li><a href="/workload">Workload</a></li>
+				<li><a href="/user-management">User management</a></li>
+				<li><a href="/holiday-management">Holiday management</a></li>
+			{{/ifCheckRole}}
+				<li><a href="/non-working">Non working</a></li>
+			</ul>
+		</nav>
+		<nav class="col user-nav">
+			<ul>
+				<li><span>Log In as:</span><span class="user-name"><span class="oi mr-1" data-glyph="person"></span>{{email}}</span></li>
+				<li>
+					<span class="oi btn-logout" data-glyph="caret-bottom"></span>
+					<ul class="sub-menu">
+						<li><a href="/auth/logout"><span class="oi mr-2 no-black" data-glyph="account-logout"></span>Log out</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	<!-- top-nav -->
+	</div>
+
+	<header class="row">
+		<h1 class="col logo"><img src="/img/logo_rakumo.svg" alt="rakumo"></h1>
+		<div class="col-2 search-area d-none">
+			<input class="form-control form-control-sm" type="text" placeholder="Search">
+		</div>
+	</header>
+
+		{{{body}}}
+
+	<footer class="row">
+		<div class="col text-center">Copyright © 2018 rakumo Co., Ltd. All Rights Reserved.</div>
+	</footer>
+
+	<div class="modal fade p-0" id="syncDataModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header py-2">
+					<h5 class="modal-title"><span class="oi mr-1" data-glyph="warning"></span>Warning</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body py-4">Are you sure want to sync data from Redmine?</div>
+				<div class="modal-footer py-2">
+					<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"><span class="oi mr-1" data-glyph="x"></span>Cancel</button>
+					<button type="button" class="btn btn-sm btn-primary btn-confirm-sync"><span class="oi mr-1" data-glyph="check"></span>OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- container-fluid -->
+</div>
+<!-- scripts library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<!-- Datatables -->
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/3.2.6/js/dataTables.fixedColumns.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
+<script src="https://cdn.datatables.net/keytable/2.5.0/js/dataTables.keyTable.min.js"></script>
+<!-- Latest compiled and minified JavaScript multiple-select-->
+<script src="https://unpkg.com/multiple-select@1.3.1/dist/multiple-select.min.js"></script>
+<!-- vitalets edit inline -->
+<script src="/js/bootstrap-editable.min.js"></script>
+<script src="/js/wokload-function.js"></script>
+<!-- Jquery UI Month Picker -->
+<script src="/js/MonthPicker.min.js"></script>
+<!-- My function -->
+<script src="/js/functions.js"></script>
+<script src="/js/datatables.js"></script>
+</body>
+</html>

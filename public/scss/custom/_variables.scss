@@ -1,0 +1,167 @@
+﻿//
+// text font size
+//
+$constant: 15; // Don't change this if in doubt.
+$font-family-base: Arial, Helvetica, sans-serif;
+$font-size-base: $constant; // same 1rem
+html, body {
+	font-family: $font-family-base;
+	font-size: $font-size-base#{px};
+}
+// Main width device
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+// how to use text-font-size('4') => font-size: 23px
+$text-font-sizes: (
+	'10': 10,
+	'11': 11,
+	'12': 12,
+	'13': 13,
+	'14': 14,
+	'15': 15,
+	'16': 16,
+	'17': 17,
+	'20': 20,
+	'25': 25,
+	'30': 30,
+	'35': 35,
+);
+// hx font size
+// how to use hx-font-size(h1) => font-size: 15px
+$hx_font-sizes: (
+	'h1': 0,
+	'h2': 20,
+	'h3': 18,
+	'h4': 16,
+	'h5': 14,
+	'h6': 14,
+);
+// main color
+$black:		#000;
+$brown: 	#4c3d3d;
+$purple: 	rgb(103, 58, 183);
+$orange: 	#FECE8E;
+$grey: 		lighten($black, 50%);
+$blue: 		#1A8CFF;
+$white: 	#FFF;
+$theme-colors: (
+    'available': $success,
+    'normal': $warning,
+    'overload': $danger,
+);
+
+// background color
+$bg-colors: (
+	'black': lighten($black, 30%),
+	'orange': $orange,
+	'grey': $grey,
+	'blue': $blue,
+	'white': $white,
+);
+//
+// text color
+// how to use text-color(1) => color: #444;
+$text-colors: (
+	'black': $black,
+	'grey': $grey,
+	'orange': $orange,
+	'white': $white,
+	'brown': $brown,
+);
+//
+// link color
+$link-colors: (
+	'blue': $blue,
+	'black': lighten($black, 30%),
+	'grey': $grey,
+	'white': $white,
+);
+// spacers
+$spacer: $constant;
+$spacers: (
+	0: 0,
+	5: 5,
+	10: 10,
+	15: 15,
+	20: 20,
+	25: 25,
+	30: 30,
+	40: 40,
+);
+// font-weight
+$font-weight: (
+	'light' : 300,
+	'normal': 400,
+	'bold': 700,
+);
+
+// function
+// Don't change this if in doubt.
+@function convert-rem ($px) {
+	$rem : round( $px / $constant * 1000 ) / 1000;
+	@return $rem#{rem};
+}
+@function text-font-size($key) {
+	@return convert-rem(map-get($text-font-sizes, $key));
+}
+@function hx-font-size($key) {
+	@return convert-rem(map-get($hx_font-sizes, $key));
+}
+@function theme-color($key) {
+	@return map-get($theme-colors, $key);
+}
+@function bg-color($key) {
+	@return map-get($bg-colors, $key);
+}
+@function text-color($key) {
+	@return map-get($text-colors, $key);
+}
+@function link-color($key) {
+	@return map-get($link-colors, $key);
+}
+@function spacer($key) {
+	@return convert-rem(map-get($spacers, $key));
+}
+@function font-weight($key) {
+	@return map-get($font-weight, $key);
+}
+/* generate custom font-size
+* class: font-10...30
+*/
+@each $selector, $size in $text-font-sizes {
+	.font-#{$size} {
+		font-size: convert-rem($size);
+		line-height: convert-rem($size);
+	}
+}
+/* generate bg-gray
+* class: bg-gray-100 .. bg-gray-900
+*/
+@each $selector, $gray in $grays {
+	.bg-gray-#{$selector} {
+		background-color: $gray!important;
+	}
+}
+// Mixin breakpoint reponsives
+// $sm: 576px;
+@mixin portrait-phone { @media (max-width: #{$sm - 0.02px}) {
+	@content;
+	}
+}
+// $md: 768px;
+@mixin landscape-phone { @media (max-width: #{$md - 0.02px}) {
+	@content;
+	}
+}
+// $lg: 992px;
+@mixin tablet { @media (max-width: #{$lg - 0.02px}) {
+	@content;
+	}
+}
+// $xl: 1200px;
+@mixin desktop { @media (max-width: #{$xl - 0.02px}) {
+	@content;
+	}
+}

@@ -1,0 +1,129 @@
+@charset "UTF-8";
+.tools {
+	margin-top: convert-rem(15);
+}
+.group-search {
+	max-width: convert-rem(210);
+}
+.input-center {
+	margin-right: auto;
+	margin-left: auto;
+}
+.group-search-long {
+	max-width: convert-rem(350);
+}
+.row.tools {
+	align-items: center;
+	.table-main {
+		margin-left: auto;
+		min-width: initial;
+		max-width: convert-rem(300);
+		flex-grow: 1;
+	}
+}
+.icon-before:before {
+	content: "|";
+	font-size: convert-rem(15);
+	margin-right: .25rem;
+	line-height: 1;
+}
+span.hour-add{
+	display: none;
+	:before {
+		content : "\FF0B";
+		padding: 0 convert-rem(10);
+	}
+}
+.comment, .truncate {
+	overflow: hidden;
+	max-width: convert-rem(1);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.project-name {
+	width: convert-rem(100);
+	max-width: min-content;
+	min-width: convert-rem(100);
+}
+main.content {
+	background-color: bg-color('white');
+	border: 1px solid $grey;
+	margin-top: convert-rem(15);
+	margin-bottom: convert-rem(30);
+	overflow-x: auto;
+}
+
+.loading {
+	background: rgba(0,0,0,.7) url('../img/loader.gif') no-repeat center center;
+	background-size: convert-rem(200);
+	display: none;
+	position: fixed;
+	width: 100%;
+	height: 100vh;
+	z-index: 99999;
+}
+.img-help {
+	max-width: 100%;
+	height: auto;
+	display: block;
+	margin: 0 auto;
+}
+.btn-view {
+	position: absolute;
+	top: convert-rem(120);
+    right: 0;
+}
+.form-project {
+	position: absolute;
+    left: convert-rem(290);
+    top: convert-rem(65);
+}
+.hidden {
+	visibility: hidden;
+}
+.fieldset {
+	border: 1px solid $gray-500;
+	border-top: none;
+	padding: 0.5em;
+}
+
+.fieldset>h4 {
+	font-family: $font-family-base;
+	font-weight: normal;
+	font-size: 1rem;
+	margin: -1em -0.5em 0;
+}
+
+.fieldset>h4>span {
+	float: left;
+}
+
+.fieldset>h4:before {
+	border-top: 1px solid $gray-500;
+	content: ' ';
+	float: left;
+	margin: 0.5em 1px 0 -1px;
+	width: 1.5em; //old: 0.75em;
+}
+
+.fieldset>h4:after {
+	border-top: 1px solid $gray-500;
+	content: ' ';
+	display: block;
+	height: 1.5em;
+	left: 1px;
+	margin: 0 1px 0 0;
+	overflow: hidden;
+	position: relative;
+	top: 0.5em;
+}
+.custom-search {
+	position: absolute;
+    top: convert-rem(65);
+    left: convert-rem(15);
+}
+.group-status {
+	position: absolute;
+	top: convert-rem(15);
+	right: 0;
+}

@@ -1,0 +1,120 @@
+.container {
+	@include tablet {
+		.global-nav {
+			display: none;
+		}
+	}
+	.tools {
+		flex-direction: column;
+		.form-group {
+			margin: 0;
+		}
+	}
+}
+// .form-check-inline {
+// 	@include portrait-phone {
+// 		margin-right: .25rem;
+// 	}
+// }
+.tbl-non-working {
+	th {
+		background-color: lighten($blue, 10%);
+		color: white;
+	    text-transform: uppercase;
+	}
+	td {
+		padding-left: convert-rem(30);
+	}
+	max-width: convert-rem(515);
+	@media (max-width:530) {
+		max-width: convert-rem(345);
+	}
+}
+.form-non-working {
+	margin: 0 auto;
+	max-width: convert-rem(500);
+	box-shadow: 0 1px 4px 0 rgba(0,0,0,0.37);
+    background-color: $white;
+    padding: 1.5rem 1rem;
+	// &.fieldset {
+	// 	padding: 1em;
+	// 	h4 {
+	// 		margin: -1.5em -1em 0;
+	// 	}
+	// }
+	h4 {
+		border-bottom: 2px solid $blue;
+		color: $blue;
+		font-size: convert-rem(20);
+		margin-bottom: 1rem;
+		text-transform: capitalize;
+	}
+	// .d-flex:not(.list-btn-form) {
+	// 	flex-direction: column;
+	// }
+	label:not(.custom-control-label) {
+		text-transform: uppercase;
+		margin-bottom: .5rem;
+		&:after {
+			content: "\002A";
+			color: red;
+			margin-left: convert-rem(5);
+		}
+	}
+	.time-late{
+		.form-group:first-child {
+			margin-right: convert-rem(60);
+			@media (max-width: 360px) {
+				margin-right: convert-rem(20);
+			}
+		}
+		
+	}
+}
+.input-text-other {
+	height: 1.25rem;
+	background: none;
+	border: none;
+	border-radius: 0;
+	border-bottom: 1px solid $gray-500;
+	text-align: center;
+	&:focus {
+		background: none;
+		box-shadow: none;
+	}
+	&.form-control:disabled, .form-control[readonly] {
+		background-color: $white;
+	}
+}
+.append-input {
+	padding-top: calc(.25rem + 1px);
+    padding-bottom: calc(.25rem + 1px);
+    font-size: .875rem;
+    line-height: 1.5;
+    margin-left: .25rem;
+}
+.form-group-disabled {
+	label {
+		color: #6c757d; //color disable boostrap 4
+		cursor: default;
+	}
+}
+.custom-control-label::before, 
+.custom-control-label::after {
+	top: .15rem;
+	left: -1rem;
+    width: .8rem;
+    height: .8rem;
+}
+.custom-control-label::before {
+	background-color: $white;
+	border-radius: 50%;
+    border: solid 1px;
+    border-color: $blue;
+}
+.custom-control-inline {
+	display: inline-flex;
+    align-items: center;
+    padding-left: 0;
+    margin-right:  1.5rem;
+}

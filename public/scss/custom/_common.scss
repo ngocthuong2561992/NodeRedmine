@@ -1,0 +1,136 @@
+@charset "UTF-8";
+body {
+	background-color: $gray-200;
+	color: $black;
+}
+a, .text-link {
+	color: link-color('blue');
+	&:hover {
+		color: link-color('blue');
+	}
+}
+@for $i from 1 through 6 {
+	h#{$i}{
+		font-size: hx-font-size(h#{$i});
+		font-weight: font-weight('bold');
+		line-height: 1.2;
+		margin: 0;
+	}
+}
+$width-map: 3, 5, 10, 15, 40;
+@each $i in $width-map {
+  .w-#{$i} {
+    width: #{$i*1%};
+  }
+}
+$width-px-map: 30, 45, 48, 60, 70, 77, 90, 95, 110, 120, 125, 180, 590, 635, 755;
+@each $i in $width-px-map {
+  .wpx-#{$i} {
+    width: convert-rem($i);
+    min-width: convert-rem($i);
+  }
+}
+$max-width-map: 40, 70, 90, 105, 180, 200, 240, 255, 300, 425, 645, 660;
+@each $i in $max-width-map {
+  .mw-#{$i} {
+    max-width: convert-rem($i);
+  }
+}
+$height-map: 50;
+@each $i in $height-map {
+  .height-#{$i} {
+    height: convert-rem($i);
+  }
+}
+.w-auto {
+	width: auto;
+}
+.border-separate {
+  border-collapse: separate;
+  border-spacing: 0 convert-rem(3); 
+}
+.container-fluid {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	min-width: convert-rem(1000);
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: none;
+}
+/*
+** Lists
+*/
+.list-unstyled,
+.list-inline {
+  @include list-unstyled;
+}
+.list-inline-item {
+  display: inline-block;
+  &:not(:last-child) {
+    margin-right: $list-inline-padding;
+  }
+}
+input::placeholder {
+	color: $gray-400;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	-moz-appearance:textfield;
+}
+input[type=number] {-moz-appearance:textfield;}
+.sticky-top{position: -webkit-sticky;}
+.pointer {cursor: pointer;}
+.btn-xs {
+  @include button-size($btn-padding-y-sm/2, $btn-padding-x-sm/2, .75rem, 1.25, $btn-border-radius-sm);
+}
+.editable-click {
+	border-bottom: none;
+    font-weight: font-weight('normal');
+}
+.control-group div:first-child {
+	display: flex;
+	align-items: center;
+}
+// Workload color
+@mixin gradient-bg-important($color) {
+  @if $enable-gradients {
+    background: $color linear-gradient(180deg, mix($body-bg, $color, 15%), $color) repeat-x !important;
+  } @else {
+    background-color: $color !important;
+  }
+}
+@mixin wl-variant($background, $color) {
+  color: $color;
+  @include gradient-bg-important($background);
+}
+@each $color, $value in $theme-colors {
+  .wl-#{$color} {
+    @include wl-variant(theme-color-level($color, $alert-bg-level), theme-color-level($color, $alert-color-level));
+    >td {
+    	@include wl-variant(theme-color-level($color, $alert-bg-level), theme-color-level($color, $alert-color-level));
+    	> a:not(.text-link) {
+    		color: theme-color-level($color, $alert-color-level);
+    	}
+    }
+  }
+}
+.no-break {
+	white-space: nowrap;
+}
+.scroll-y {overflow-y: scroll;}
+.text-wrap{word-break: break-all;}
+.txt-small {font-size: 0.8rem;}
+.datepicker td, .datepicker th {
+  width: convert-rem(32);
+}
+.truncate {
+  overflow: hidden;
+  max-width: convert-rem(1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

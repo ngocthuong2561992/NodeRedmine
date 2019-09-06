@@ -1,0 +1,205 @@
+.table {
+    &-sticky {
+        width: 100%;
+        > thead > tr >th, > thead > tr >td,
+        > tbody > tr >th, > tbody > tr >td,
+        > tfoot > tr >th, > tfoot > tr >td {
+            padding: 4px;
+            vertical-align: middle;
+            // box-sizing: border-box;
+            box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.00), // bottom
+                        1px 0px 0px 0px rgba(0, 0, 0, 0.00),           // right
+                        0px -1px 0px 0px $gray-500,          // top
+                        -1px 0px 0px 0px $gray-500;          // left
+            z-index: 5;
+        }
+        &.datatable-user, &.datatable-project {
+            > thead > tr >th, > thead > tr >td,
+            > tbody > tr >th, > tbody > tr >td,
+            > tfoot > tr >th, > tfoot > tr >td {
+                box-sizing: border-box;
+            }
+        }
+        > thead > .none-th {
+            >th {
+                background-color: bg-color('white');
+                color: text-color('black');
+                font-weight: normal;
+                border-right: 1px solid $gray-500;
+
+            }
+            &:first-child > th {
+                border-top: 1px solid $gray-500;
+            }
+        }
+        > thead > tr {
+            >th {
+                background-color: bg-color('black');
+                border-bottom: 1px solid $gray-500;
+                color: text-color('white');
+                position: relative;
+                // right: 1px;
+                text-align: center;
+                a {
+                    color: text-color('white');
+                }
+                &.sticky-cell {
+                    z-index: 6;
+                }
+            }
+        }
+        > tbody > tr >.sticky-cell {
+            position: relative;
+            z-index: 2;
+            &:before {
+                background-color: $gray-500;
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                height: 100%;
+                width: 1px;
+            }
+        }
+        .form-control:not(:focus) {
+            background-color: transparent;
+        }
+        &-striped {
+            tbody:not(.hover) > tr:nth-child(even) {
+                >td {
+                    background-color: $gray-200;
+                    &.sticky-cell {
+                        background-color: $gray-200;
+                    }
+                }
+            }
+            tbody:not(.hover) > tr:nth-child(odd) {
+                >td {
+                    background-color: $white;
+                    &.sticky-cell {
+                        background-color: $white;
+                    }
+                }
+            }
+        }
+
+        &-no-border {
+            > thead > tr >th, > thead > tr >td,
+            > tbody > tr >th, > tbody > tr >td,
+            > tfoot > tr >th, > tfoot > tr >td {
+                box-shadow: none;
+            }
+        }
+    }
+}
+
+table.dataTable tbody > tr.selected, table.dataTable tbody > tr > .selected {
+    > td {
+        background-color: lighten($blue, 40%) !important;
+    }
+}
+.sticky-table {overflow: auto;}
+.maintable {
+    // border: 1px solid $grey;
+    > thead > tr >th, > thead > tr >td,
+    > tbody > tr >th, > tbody > tr >td,
+    > tfoot > tr >th, > tfoot > tr >td {
+        border-top: 1px solid $gray-400;
+        border-left: 1px solid $gray-400;
+        position: relative;
+        padding: 4px;
+        vertical-align: middle;
+    }
+    > thead > tr {
+        background-color: bg-color('black');
+        color: text-color('white');
+        text-align: center;
+    }
+    > tbody > tr:nth-child(odd) {
+        background-color: $white;
+    }
+    > tbody > tr:nth-child(even) {
+        background-color: $gray-200;
+    }
+    > tbody > tr:hover {
+        background-color: lighten($blue, 40%);
+    }
+    .form-control:not(:focus) {
+        background-color: transparent;
+    }
+}
+table.dataTable{
+    margin-top: 0 !important;
+     margin-bottom: 0 !important;
+    &.no-footer {
+        border-bottom-color: $gray-500 !important;
+    }
+}
+.dataTables_wrapper.no-footer .dataTables_scrollBody {
+    box-shadow: 0 0 0 1px  $gray-500;
+    // border-bottom: 1px solid $gray-500;
+}
+div.dataTables_wrapper div.dataTables_filter {
+    margin-top: calc(.375rem + 1px);
+}
+.dataTables_filter {
+   float: left !important;
+}
+
+div.dataTables_wrapper div.dataTables_filter input {
+    border: 1px solid $gray-500;
+    border-radius: 4px;
+    height: 26px;
+    line-height: 26px;
+}
+.dataTables_scrollHead {
+    box-shadow: -1px 0px 0px 0px $gray-500;
+}
+table.dataTable thead > tr > th.sorting:last-child {
+    border-right: 1px solid $gray-500; }
+table.dataTable thead > tr > th:last-child {
+    border-right: 1px solid $gray-500; }
+// .DTFC_LeftBodyWrapper {
+//     &:after {
+//         content: "";    position: absolute; width: 300px;   height: 100px;  top: 1px;   left: -1px; z-index: -1;    background-color: #FC0000;
+//     }
+// }
+// td.sticky-cell:after {content: "";    position: absolute; width: 100%;   height: 1px;  bottom: 1px;   left: -1px; z-index: 1;    background-color: #FC0000;}
+//Edit inline
+.custom-input {
+    font-size: .8rem;
+    height: convert-rem(20);
+    line-height: convert-rem(20);
+    margin: 0;
+    padding: 0 convert-rem(5);
+    &:focus{box-shadow: none;}
+}
+.editableform {
+    margin-top: -2px;
+    margin-bottom: -2px;
+}
+.editableform-loading {
+    height: convert-rem(20);
+    line-height: convert-rem(20);
+    position: absolute;
+    top: convert-rem(2);
+}
+span.name-edit, span.g-suite-edit {
+    &.editable.editable-click:hover:after {
+        display: inline-block;
+        content: '\e0a3';
+        font-family: 'Icons';
+        font-size: 80%;
+        margin-left: 5px;
+    }
+}
+span.from-edit, span.to-edit {
+    &.editable.editable-click:hover:after {
+        display: inline-block;
+        content: '\e02b';
+        font-family: 'Icons';
+        font-size: 80%;
+        margin-left: 5px;
+    }
+}

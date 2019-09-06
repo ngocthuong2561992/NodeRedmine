@@ -1,0 +1,158 @@
+<div class="row main-nav">
+	<nav class="col">
+		<ul>
+			<li class="selected"><span>User detail</span></li>
+		{{#ifCheckRole 'admin' role}}
+			<li class="mb-1 ml-1 bg-light"><button type="button" class="btn btn-xs btn-success btn-sync" data-toggle="tooltip" data-placement="top" title="Sync data from Redmine"><span class="oi mr-1" data-glyph="reload"></span>Sync data</button></li>
+		{{/ifCheckRole}}
+		</ul>
+		<span class="font-weight-normal">Last sync: <strong class="text-danger">{{lastSync}}</strong></span>
+	</nav>
+</div>
+<main class="position-relative">
+	<div class="group-tool pt-3">
+		<div class="d-flex align-items-center mb-3">
+			<a href="/workload" class="btn btn-xs btn-info"><span class="oi mr-1" data-glyph="chevron-left"></span>All user</a>
+			<span class="ml-1 txt-small icon-before">{{firstname}} {{lastname}}</span>
+		</div>
+		<div class="input-group input-group-sm input-group-picker mb-3">
+			<div class="input-group-prepend">
+				<span class="input-group-text bg-white">Year-Month</span>
+			</div>
+			<input type="text" class="form-control form-control-sm mw-70" data-picker="in-month" name="filter" autocomplete="off" value="{{year}}-{{month}}"/>
+			<div class="input-group-append">
+			    <button class="btn btn-info" type="button" onclick="filter()" id="button-addon2">Apply</button>
+		  	</div>
+		</div>
+		<div class="fieldset mw-255 group-status">
+		    <h4><span>Workload status</span></h4>
+		    <table class="txt-small w-100 mw-240 border-separate">
+				<colgroup>
+					<col style="width: 30%">
+					<col style="width: 70%">
+				</colgroup>
+				<tbody>
+					<tr class="bg-white">
+						<th class="text-center wl-available px-2">Available</th>
+						<td class="text-left px-2">Workload < 50%</td>
+					</tr>
+					<tr class="bg-white">
+						<th class="text-center wl-normal px-2">Normal</th>
+						<td class="text-left px-2">50 <= Workload <= 100%</td>
+					</tr>
+					<tr class="bg-white">
+						<th  class="text-center wl-overload px-2">Overload</th>
+						<td class="text-left px-2">Workload > 100%</td>
+					</tr>
+				</tbody>
+			</table>
+	  	</div>
+	</div>
+	<div class="js-sticky-table">
+
+		<table class="datatable-user datatable-hover table-sticky table-sticky-striped txt-small w-100">
+			<colgroup>
+					<col style="width: 120px">
+					<col style="width: 635px">
+					<col style="width: 120px">
+					{{#forLoopDayOfMonthUserDetail 1 allDays 1}}
+					<col style="width: 48px">
+					{{/forLoopDayOfMonthUserDetail}}
+			</colgroup>
+			<thead>
+				<tr class="sticky-row none-th">
+					<th class="text-right sticky-cell wpx-755" colspan="2">Total time</th>
+					<th class="text-left sticky-cell wpx-120">{{#convert totalTime}}{{/convert}} hours</th>
+					<th class="text-left" colspan="{{allDays}}"></th>
+				</tr>
+				<tr class="sticky-row none-th">
+					<th class="text-right sticky-cell wpx-755" colspan="2">Total real time</th>
+					<th class="text-left sticky-cell {{#setColorWorkload workload}}{{/setColorWorkload}} wpx-120">{{#convert totalRealTime}}{{/convert}} hours</th>
+					<th class="text-left" colspan="{{allDays}}"></th>
+				</tr>
+				<tr class="sticky-row">
+					<th class="sticky-cell wpx-120" scope="col">Project</th>
+					<th class="sticky-cell wpx-635" scope="col">Issue</th>
+					<th class="sticky-cell wpx-120" scope="col">Total time (h)</th>
+					{{#forLoopDayOfMonthUserDetail 1 allDays 1}}
+						<th class="wpx-48" scope="col"  
+						{{#setColorSatSunUserDetail this ../arrSatSun}}
+						style="background-color: brown"
+						{{/setColorSatSunUserDetail}}
+						>
+							{{this}}
+						</th>
+					{{/forLoopDayOfMonthUserDetail}}
+				</tr>
+
+			</thead>
+			<tbody id="mytable">
+				{{#each listIssue as |issue| }}
+				<tr>
+					<td class="sticky-cell wpx-120 truncate" scope="col">
+						<a href="/project-detail/{{this.project.id}}.html" class="text-link">{{this.project.name}}</a>
+					</td>
+					<td class="sticky-cell wpx-635 truncate" scope="col"><a href="https://rel.rakumo.vn/redmine/issues/{{this.id}}" target="_blank" class="text-link mr-1">#{{this.id}}</a><span>{{this.subject}}</span></td>
+					<td class="sticky-cell no-break text-center" scope="col">
+						{{#getSumTEUserDetail ../allDays ../listTE issue.id}}
+						{{/getSumTEUserDetail}}
+					</td>
+					{{#forLoopDayOfMonthUserDetail 1 ../allDays 1}}
+						<td class="wpx-48 text-center hour" scope="col"
+						{{#setColorSatSunUserDetail this ../../arrSatSun}}
+						style="background-color: #f8d7da"
+						{{/setColorSatSunUserDetail}}
+						>
+							{{#setHourUserDetail issue.id this ../../listTE}}
+							{{/setHourUserDetail}}
+						</td>
+					{{/forLoopDayOfMonthUserDetail}}
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+</main>
+
+<!-- modal -->
+<div class="modal fade p-0" id="errorFromTo" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header py-2">
+				<h5 class="modal-title"><span class="oi mr-1" data-glyph="warning"></span>Warning</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body py-4">From-To not more than 24 months</div>
+			<div class="modal-footer py-2">
+				<button type="button" class="btn btn-sm btn-primary btn-confirm-del" data-dismiss="modal"><span class="oi mr-1" data-glyph="check"></span>OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<input type="hidden" value="{{idusername}}" name="textIDName">
+
+<script>
+    $(document).ready( function() {
+		let id = $('input[name="textIDName"]').val();
+		window.history.pushState("object or string", "Title", "/user-detail/" + id);
+		let currentURL = window.location.href;
+
+		if (performance.navigation.type == 1) {
+			currentURL = currentURL.replace('/user-detail/' + id,'/');
+			window.location.href = currentURL;
+		}
+	});
+
+	function filter() {
+		let id = $('input[name="textIDName"]').val();
+		let the_string = $('input[name="filter"]').val();
+		let parts = the_string.split('-', 2);
+		let year = parts[0];
+		let month = parts[1];
+		let currentURL = window.location.href;
+		window.location.href = currentURL + '/'+ year + '/' + month;
+	}
+</script>

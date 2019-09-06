@@ -1,0 +1,203 @@
+<div class="row main-nav">
+	<nav class="col">
+		<ul>
+			<li class="selected"><span>Non working</span></li>
+		</ul>
+	</nav>
+</div>
+<div class="tools mb-3 d-flex">
+	<!-- <div class="d-flex align-items-center">
+		<label class="col-form-label col-form-label-sm wpx-90">Team</label>
+		<div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input class="custom-control-input" type="radio" name="inlineRadioOptions1" id="rakumo-team" value="1" checked>
+				<label class="custom-control-label wpx-77 small" for="rakumo-team">rakumo team</label>
+			</div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input class="custom-control-input" type="radio" name="inlineRadioOptions1" id="oh-team" value="others">
+				<label class="custom-control-label small" for="oh-team">OH team</label>
+			</div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input class="custom-control-input" type="radio" name="inlineRadioOptions1" id="open-team" value="others">
+				<label class="custom-control-label wpx-77 small" for="open-team">Open team</label>
+			</div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input class="custom-control-input" type="radio" name="inlineRadioOptions1" id="back-office" value="others">
+				<label class="custom-control-label small" for="back-office">Back Office</label>
+			</div>
+		</div>
+	</div>
+	<div class="d-flex align-items-center">
+		<label class="col-form-label col-form-label-sm wpx-90">Choose</label>
+		<div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input class="custom-control-input" type="radio" name="inlineRadioOptions" id="late" value="1" checked>
+				<label class="custom-control-label wpx-77 small" for="late">Late</label>
+			</div>
+			<div class="custom-control custom-radio custom-control-inline">
+				<input class="custom-control-input" type="radio" name="inlineRadioOptions" id="day-off" value="others">
+				<label class="custom-control-label small" for="day-off">Day off</label>
+			</div>
+		</div>
+	</div> -->
+	<table class="w-100 border-separate tbl-non-working">
+		<colgroup>
+			<col style="width: 85px">
+			<col style="width: auto">
+		</colgroup>
+		<tbody>
+			<tr class="bg-white">
+				<th class="text-center px-2 small">Team</th>
+				<td class="text-left">
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" name="inlineRadioOptions1" id="rakumo-team" value="1" checked>
+						<label class="custom-control-label wpx-77 small" for="rakumo-team">rakumo team</label>
+					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" name="inlineRadioOptions1" id="oh-team" value="others">
+						<label class="custom-control-label wpx-77 small" for="oh-team">OH team</label>
+					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" name="inlineRadioOptions1" id="open-team" value="others">
+						<label class="custom-control-label wpx-77 small" for="open-team">Open team</label>
+					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" name="inlineRadioOptions1" id="back-office" value="others">
+						<label class="custom-control-label small" for="back-office">Back Office</label>
+					</div>
+				</td>
+			</tr>
+			<tr class="bg-white">
+				<th class="text-center px-2 small">Option</th>
+				<td class="text-left">
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" name="inlineRadioOptions" id="late" value="1" checked>
+						<label class="custom-control-label wpx-77 small" for="late">Late</label>
+					</div>
+					<div class="custom-control custom-radio custom-control-inline">
+						<input class="custom-control-input" type="radio" name="inlineRadioOptions" id="day-off" value="others">
+						<label class="custom-control-label small" for="day-off">Day off</label>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<main>
+	<!-- Late -->
+	<form action="" class="form-non-working form-late">
+		<h4>lateness form</h4>
+		<div class="d-flex time-late">
+			<div class="form-group">
+				<label class="col-form-label col-form-label-sm" for="duration">Duration time</label>
+				<select class="form-control form-control-sm mw-105" id="duration">
+					<option selected>15 minutes</option>
+					<option>30 minutes</option>
+					<option>1 hour</option>
+			    </select>
+			</div>
+			<div class="form-group">
+				<label class="col-form-label col-form-label-sm">Date</label>
+				<input type="text" class="form-control form-control-sm mw-105" data-picker="late-date" id="late-date">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-form-label col-form-label-sm" for="reason-late">Reason</label>
+			<textarea class="form-control form-control-sm" id="reason-late" rows="3"></textarea>
+			<!-- <p class="validate-err text-danger small">Please enter your reason for being late.</p> -->
+		</div>
+		<div class="list-btn-form d-flex justify-content-end">
+			<button type="reset" value="Reset" class="btn btn-outline-danger btn-sm"><span class="oi mr-1" data-glyph="x"></span>Clear</button>
+			<button class="btn btn-success btn-sm ml-2 btn-send-mail-late"><span class="oi mr-1" data-glyph="envelope-closed"></span>Send</button>
+		</div>
+	</form>
+	<!-- Day off -->
+	<form action="" class="form-non-working form-day-off d-none">
+		<h4>absence form</h4>
+		<div class="mb-3">
+			<label class="col-form-label col-form-label-sm">Choose</label>
+			<div class="ml-3">
+				<div class="custom-control custom-radio custom-control-inline">
+					<input class="custom-control-input" type="radio" name="inlineRadioOptions2" id="one-day" value="1" checked>
+					<label class="custom-control-label small" for="one-day">1 day</label>
+				</div>
+				<div class="custom-control custom-radio custom-control-inline">
+					<input class="custom-control-input" type="radio" name="inlineRadioOptions2" id="more-than-one" value="others">
+					<label class="custom-control-label small" for="more-than-one">More than 1 day</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group one-day">
+			<label class="col-form-label col-form-label-sm" for="number-of-hours">Hours/day</label>
+			<select class="form-control form-control-sm mw-70" id="number-of-hours">
+				<option selected>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+				<option>6</option>
+				<option>7</option>
+				<option>Full day</option>
+		    </select>
+		</div>
+		<!-- <div class="form-group d-flex more-than-one form-group-disabled">
+			<label class="col-form-label col-form-label-sm wpx-110" for="number-of-days">Number of days</label>
+			<input type="text" name="other_hours" class="form-control form-control-sm input-text-other mw-40" id="number-of-days" disabled>
+			<span class="append-input">days</span>
+		</div> -->
+		<div class="mb-3 more-than-one">
+			<label class="col-form-label col-form-label-sm">Date</label>
+			<div id="media_item_repeat">
+				<div class="row-group repeatable-template d-none">
+					<div class="d-flex align-items-center">
+						<input type="text" class="form-control form-control-sm mw-90 mb-2" data-picker="day-off">
+						<button type="button" class="btn btn-xs btn-outline-danger btn-close-repeat-item ml-3"><span class="oi mr-1" data-glyph="x"></span>Delete</button>
+					</div>
+				</div>
+
+				<div class="row-group repeatable-row">
+					<div class="d-flex align-items-center">
+						<input type="text" class="form-control form-control-sm mw-90 mb-2" data-picker="day-off">
+					</div>
+				</div>
+			</div>
+			<button type="button" class="btn btn-xs btn-outline-primary btn-add d-block ml-auto btn-repeat" data-selector="media_item_repeat" data-iterator="1" data-limit="unlimited" disabled>
+				<span class="oi mr-1" data-glyph="plus"></span>Add
+			</button>
+		</div>
+		<!-- <div class="form-group d-flex">
+			<label class="col-form-label col-form-label-sm wpx-110">From Date</label>
+			<input type="text" class="form-control form-control-sm mw-90" data-picker="day-off" id="day-off">
+		</div> -->
+		<div class="form-group">
+			<label class="col-form-label col-form-label-sm" for="reason-off">Reason</label>
+			<textarea class="form-control form-control-sm" id="reason-off" rows="3"></textarea>
+		</div>
+		<div class="list-btn-form d-flex justify-content-end">
+			<button type="reset" value="Reset" class="btn btn-outline-danger btn-sm"><span class="oi mr-1" data-glyph="x"></span>Clear</button>
+			<button class="btn btn-success btn-sm ml-2 btn-send-mail-off"><span class="oi mr-1" data-glyph="envelope-closed"></span>Send</button>
+		</div>
+	</form>
+</main>
+
+<!-- Modal -->
+<div class="modal fade p-0" id="sendModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header py-2">
+				<h5 class="modal-title"><span class="oi mr-1" data-glyph="warning"></span>Confirm</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body p-4"> 
+				<p>Are you sure want to send?</p>
+			</div>
+			<div class="modal-footer py-2">
+				<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"><span class="oi mr-1" data-glyph="x"></span>Cancel</button>
+				<button type="button" class="btn btn-sm btn-primary btn-confirm-del"><span class="oi mr-1" data-glyph="check"></span>OK</button>
+			</div>
+		</div>
+	</div>
+</div>

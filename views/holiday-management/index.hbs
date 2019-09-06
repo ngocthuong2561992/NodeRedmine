@@ -1,0 +1,224 @@
+<div class="row main-nav">
+	<nav class="col">
+		<ul>
+			<li class="selected"><span>Holiday management</span></li>
+		</ul>
+	</nav>
+</div>
+<div class="row tools mb-3">
+    <form action="/holiday-management/new" method="POST">
+		<div class="col-12">
+			<div class="input-group input-group-sm input-group-picker">
+				<div class="input-group-prepend">
+					<span class="input-group-text bg-white">Holiday name</span>
+				</div>
+				<input type="text" class="form-control form-control-sm mw-200" value="{{name}}" name="name" id='name' onpaste="return false">
+				<div class="input-group-prepend input-group-append">
+					<span class="input-group-text bg-white">From</span>
+				</div>
+				<input type="text" class="form-control form-control-sm mw-90" data-picker="form-date" value="{{from}}" name="from" id='from' autocomplete="off"/>
+				<div class="input-group-prepend input-group-append">
+					<span class="input-group-text bg-white">To</span>
+				</div>
+				<input type="text" class="form-control form-control-sm mw-90" data-picker="to-date" value="{{to}}" name="to" id='to' autocomplete="off"/>
+				<div class="input-group-append">
+				    <button class="btn btn-info" type="submit" id="button-addon2">Add</button>
+			  	</div>
+			</div>
+		</div>
+    </form>
+</div>
+
+<main>
+	<div class="js-sticky-table">
+		<table class="datatable table-edit table-remove-row maintable txt-small w-100 ">
+			<colgroup>
+					<col style="width: 5%">
+					<col style="width: 30%">
+					<col style="width: 30%">
+					<col style="width: 30%">
+					<col style="width: 5%">
+				</colgroup>
+			<thead>
+				<tr class="sticky-row">
+					<th class="sticky-cell" scope="col">No.</th>
+					<th class="sticky-cell" scope="col">Holiday name</th>
+					<th class="sticky-cell" scope="col">From</th>
+					<th class="sticky-cell" scope="col">To</th>
+					<th class="sticky-cell no-sort" scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+                {{#each holiday}}
+				<tr>
+					<td class="text-center order">{{math @index "+" 1}}</td>
+					<td class="truncate"><span onclick="getIDToUpdateName('{{this._id}}','{{this.name}}')" class="name-edit">{{this.name}}</span></td>
+					<td><span onclick="getIDToUpdateDateFrom('{{this._id}}','{{#formatDate this.from "YYYY-MM-DD"}} {{/formatDate}}')" class="from-edit">{{#formatDate this.from "YYYY-MM-DD"}} {{/formatDate}}</span></td>
+					<td><span onclick="getIDToUpdateDateTo('{{this._id}}','{{#formatDate this.to "YYYY-MM-DD"}} {{/formatDate}}')" class="to-edit">{{#formatDate this.to "YYYY-MM-DD"}} {{/formatDate}}</span></td>
+					<td class="text-center"><button onclick="getIDAndDelete('{{this._id}}')" class="btn btn-xs btn-danger btn-delete" data-toggle="modal" data-target="#deleteModal">Delete</button></td>
+				</tr>	
+                {{/each}}
+			</tbody>
+		</table>
+	</div>
+</main>
+<!-- modal -->
+<div class="modal fade p-0" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header py-2">
+				<h5 class="modal-title"><span class="oi mr-1" data-glyph="warning"></span>Warning</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body py-4">Are you sure want to deleted?</div>
+			<div class="modal-footer py-2">
+				<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"><span class="oi mr-1" data-glyph="x"></span>Cancel</button>
+				<button type="button" class="btn btn-sm btn-primary btn-confirm-del" onclick="getIDAndDelete()"><span class="oi mr-1" data-glyph="check"></span>OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal -->
+<div class="modal fade p-0" id="errModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header py-2">
+				<h5 class="modal-title"><span class="oi mr-1" data-glyph="warning"></span>Error</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body p-4"> 
+				<p>{{textErr}}</p>
+			</div>
+			<div class="modal-footer py-2">
+				<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"><span class="oi mr-1" data-glyph="x"></span>Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade p-0" id="specialCharacterModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header py-2">
+				<h5 class="modal-title"><span class="oi mr-1" data-glyph="warning"></span>Error</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body p-4"> 
+				<p>{{errSpecial}}</p>
+			</div>
+			<div class="modal-footer py-2">
+				<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"><span class="oi mr-1" data-glyph="x"></span>Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<input type="hidden" value="{{errExist}}" name="errExist">
+
+<script>
+	var idToDelete;
+	var idToUpdate;
+	var editValue;
+	var editString;
+    var specialCharacter = "%\></\"'*[^&;:]`?#$(){}|!,";
+
+	function getIDAndDelete(id) {
+		if(id) {
+			idToDelete = id;
+		} else {
+			let currentURL = window.location.href;
+			window.location.href = currentURL + '/delete/' + idToDelete;
+		}
+	}
+
+	function getIDToUpdateName(id,name) {
+		editString = "name";
+		idToUpdate = id;
+		editValue = name;
+	}
+
+	function getIDToUpdateDateFrom(id,from) {
+		editString = "from";
+		idToUpdate = id;
+		editValue = from;
+	}
+
+	function getIDToUpdateDateTo(id,to) {
+		editString = "to";
+		idToUpdate = id;
+		editValue = to;
+	}
+
+	function edit() {
+		let result = $(".editable-input input").val();
+		if (result == "") {
+			result = "empty";
+		} else {
+			if (result === undefined) {
+				$("#cancelEdit").click();
+				return;
+			}
+			if (result != editValue) {
+				let isSpecial = checkForSpecialChar(result);
+				if (isSpecial == true) {
+					$('#specialCharacterModal').modal('show');
+					$("#cancelEdit").click();
+					return;
+				}
+			} else {
+				$("#cancelEdit").click();
+				return;
+			}
+		}
+		let currentURL = window.location.href;
+		if (editString == "name") {
+			window.location.href = currentURL + '/updateName/' + idToUpdate + '/' + result;
+		} else if (editString == "from") {
+			window.location.href = currentURL + '/updateDateFrom/' + idToUpdate + '/' + result;
+		} else if (editString == "to") {
+			window.location.href = currentURL + '/updateDateTo/' + idToUpdate + '/' + result;
+		}
+	}
+
+	function checkForSpecialChar(string) {
+		for (i = 0; i < specialCharacter.length; i++) {
+			if(string.indexOf(specialCharacter[i]) > -1){
+				return true
+			}
+		}
+		return false;
+	}
+
+	function enterEventEdit() {
+		$(document).on('keypress',function(e) {
+			if(e.which == 13) {
+				edit();
+			}
+		});
+	}
+
+    document.getElementById("name").onkeypress = function(e) {
+		var chr = String.fromCharCode(e.which);
+		if (specialCharacter.indexOf(chr) >= 0)
+			return false;
+	};
+
+    $(document).ready( function() {
+		let currentURL = window.location.href;
+		var errExist = $("input[name=errExist]").val();
+		window.history.pushState("object or string", "Title", "/holiday-management");
+
+		if (errExist != 'normal') {
+			$('#errModal').modal('show');
+		}
+		if (performance.navigation.type == 1) {
+			currentURL = currentURL.replace('/holiday-management','/');
+			window.location.href = currentURL;
+		}
+	});
+</script>

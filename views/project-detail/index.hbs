@@ -1,0 +1,182 @@
+<div class="row main-nav">
+	<nav class="col">
+		<ul>
+			<li class="selected"><span>Project detail</span></li>
+		{{#ifCheckRole 'admin' role}}
+			<li class="mb-1 ml-1 bg-light"><button type="button" class="btn btn-xs btn-success btn-sync" data-toggle="tooltip" data-placement="top" title="Sync data from Redmine"><span class="oi mr-1" data-glyph="reload"></span>Sync data</button></li>
+		{{/ifCheckRole}}
+		</ul>
+		<span class="font-weight-normal">Last sync: <strong class="text-danger">{{detail.lastSync}}</strong></span>
+	</nav>
+</div>
+
+<main class="position-relative">
+	<div class="group-tool pt-3">
+		<div class="d-flex align-items-center mb-3">
+			<a href="/workload" class="btn btn-xs btn-info"><span class="oi mr-1" data-glyph="chevron-left"></span>All project</a>
+			<span class="ml-1 txt-small icon-before">{{detail.project_name}}</span>
+			<span class="ml-1 txt-small icon-before">Created on: {{detail.project_created_on}}</span>
+		</div>
+		<form action="/project-detail/{{detail.project_id}}.html" method="GET" id="search-from-to">
+			<input type="hidden" value="{{detail.project_id}}" name="projectID"/>
+			<div class="input-group input-group-sm input-group-picker mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text bg-white">From</span>
+				</div>
+				<input type="text" class="form-control form-control-sm mw-90" data-picker="form-date" name="from" autocomplete="off" value="{{from}}"/>
+				<div class="input-group-prepend input-group-append">
+					<span class="input-group-text bg-white">To</span>
+				</div>
+				<input type="text" class="form-control form-control-sm mw-90" data-picker="to-date" name="to" autocomplete="off" value="{{to}}"/>
+				<div class="input-group-append">
+					<button class="btn btn-info" type="submit" id="button-addon2">Apply</button>
+				</div>
+			</div>
+		</form>
+		<div class="fieldset mw-255 group-status">
+			<h4><span>Project status</span></h4>
+			<table class="txt-small w-100 mw-240 border-separate">
+				<colgroup>
+					<col style="width: 70%">
+					<col style="width: 30%">
+				</colgroup>
+				<tbody>
+					<tr class="bg-white">
+						<th class="text-center wl-available px-2">Ahead of schedule</th>
+						<td class="text-left no-break px-3">real < plan</td>
+					</tr>
+					<tr class="bg-white">
+						<th class="text-center wl-normal px-2">As schedule</th>
+						<td class="text-left no-break px-3">real = plan</td>
+					</tr>
+					<tr class="bg-white">
+						<th  class="text-center wl-overload px-2">Delay</th>
+						<td class="text-left no-break px-3">real > plan</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<button class="btn btn-success btn-sm btn-view" type="button">Meeting minutes</button>
+	</div>
+
+	
+	<div class="js-sticky-table">
+		<table class="datatable-project datatable-hover table-sticky table-sticky-striped txt-small w-100">
+			<thead>
+				<tr class="sticky-row none-th">
+					<th class="text-right sticky-cell wpx-635">Plan time (Total)</th>
+					<th class="text-left sticky-cell wpx-180">{{detail.total_plan_time}} hours</th>
+					<th class="text-left" colspan="6"></th>
+				</tr>
+				<tr class="sticky-row none-th">
+					<th class="text-right sticky-cell wpx-635">Real time (Total)</th>
+					<th class="text-left sticky-cell {{detail.class_color}} wpx-180">{{detail.total_real_time}} hours</th>
+					<th class="text-left" colspan="6"></th>
+				</tr>
+				<tr class="sticky-row none-th">
+					<th class="text-right sticky-cell wpx-635">Real time ({{from}} ~ {{to}})</th>
+					<th class="text-left sticky-cell wpx-180">{{detail.total_real_time_from_to}} hours</th>
+					<th class="text-left" colspan="6"></th>
+				</tr>
+				<tr class="sticky-row">
+					<th class="sticky-cell no-break wpx-635" scope="col">Issue</th>
+					<th class="no-break sticky-cell wpx-180" scope="col">Workload (%)</th>
+					<th class="no-break" scope="col">Estimated time</th>
+					<th class="no-break" scope="col">Spent time</th>
+					<th class="no-break" scope="col">Start date</th>
+					<th class="no-break" scope="col">Due date</th>
+					<th class="no-break" scope="col">Status</th>
+					<th class="no-break" scope="col">% Done</th>
+				</tr>
+			</thead>
+			<tbody>
+			{{#each detail.issues}}
+				<tr class="{{this.class_color}}">
+					<td class="sticky-cell no-break wpx-635 truncate" scope="col">
+						<a href="https://rel.rakumo.vn/redmine/issues/{{this.id}}" target="_blank" class="text-link mr-1">#{{this.id}}</a>
+						<span>{{this.subject}}</span>
+					</td>
+					<td class="no-break sticky-cell text-center wpx-180" scope="col">{{this.workload}}</td>
+					<td class="no-break text-center" scope="col">{{this.estimated_time}}</td>
+					<td class="no-break text-center" scope="col">{{this.spent_time}}</td>
+					<td class="no-break text-center" scope="col">{{this.start_date}}</td>
+					<td class="no-break text-center" scope="col">{{this.due_date}}</td>
+					<td class="no-break text-center" scope="col">{{this.status}}</td>
+					<td class="no-break text-center" scope="col">{{this.done_ratio}}%</td>
+				</tr>
+			{{/each}}
+			</tbody>
+		</table>
+	</div>
+	<div class="right-menu">
+	<h2 class="right-menu__header p-3 text-success">Meeting Minutes <span class="oi btn-close float-right txt-small text-dark" data-glyph="x"></span></h2>
+	<div class="right-menu__content px-3 pb-3">
+		<div class="accordion" id="accordionExample">
+		{{#each detail.listNews}}
+			<div class="card border-0 item-new">
+				<div class="card-header rounded-0 bg-secondary" id="heading{{this.id}}">
+					<h2 class="my-0 py-2 px-3 text-white text-title" data-toggle="collapse" data-target="#collapse{{this.id}}" aria-expanded="true" aria-controls="collapse{{this.id}}">
+						{{this.title}}
+					</h2>
+				</div>
+				<div id="collapse{{this.id}}" class="collapse {{this.show}}" aria-labelledby="heading{{this.id}}" data-parent="#accordionExample">
+					<div class="card-body">
+						<p class="author">Added by <a href="#" class="user active">{{this.creator}}</a> <a href="#" title="{{this.created_on}}">{{this.created_on}}</a></p>
+						<div class="wiki">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		{{/each}}
+		</div>
+	</div>
+</main>
+<script>
+function getContentMeetingMinutes() {
+	var projectID = $('input[name="projectID"]').val();
+	var url = "/redmine/getApiNew/atom";
+	$.ajax({
+		url: url,
+		data: {
+			project_id: projectID
+		},
+		error: function() {
+		},
+		dataType: 'html',
+		success: function(data) {
+			applyHTML(data);
+		},
+		type: 'GET'
+	});
+}getContentMeetingMinutes();
+
+function applyHTML(data) {
+	var html = $.parseHTML(data);
+	var feed = html[2];
+	var title = $(feed).find('title');
+	if (title.length > 1) {
+		var content = $(feed).find('content');
+		for (var i = 1; i < title.length; i++) {
+			var item = {
+				title: title[i].textContent,
+				content: content[i - 1].textContent
+			};
+			importHTML(item);
+		}
+		disableLink();
+		noDisplayChar();
+	}
+}
+
+function importHTML(data) {
+	var parent = $('#accordionExample').find('div.item-new');
+	for (var i = 0; i < parent.length; i++) {
+		var title = $(parent[i]).find('h2.text-title').text();
+		if (title.trim() === data.title.trim()) {
+			$(parent[i]).find('div.wiki').html(data.content);
+			break;
+		}
+	}
+}
+</script>

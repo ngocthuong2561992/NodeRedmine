@@ -1,0 +1,4 @@
+- Sua dong 11 trong src/mongo/MongoManager.js: them "{ useNewUrlParser: true }" vao mongoose.connect
+- Them 1 so module: lodash, body-parser, express-handlebars, morgan, passport, passport-google-oauth, passport-local, node-cron
+- Xóa module jade
+- Xoa cac file jade trong view va thay bang file hbs

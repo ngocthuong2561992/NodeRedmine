@@ -1,0 +1,213 @@
+<div class="row main-nav">
+	<nav class="col">
+		<ul>
+			<li class="selected"><span>User management</span></li>
+		</ul>
+	</nav>
+</div>
+<div class="row tools mb-3">
+	<form action="/user-management/new" method="POST">
+		<div class="col-12">
+			<div class="input-group input-group-sm input-group-picker">
+				<div class="input-group-prepend">
+					<span class="input-group-text bg-white">Name</span>
+				</div>
+				<input type="text" class="form-control form-control-sm mw-200" value="{{name}}" name="name" id='name' onpaste="return false" autocomplete="off">
+				<div class="input-group-prepend input-group-append">
+					<span class="input-group-text bg-white">G-suite</span>
+				</div>
+				<input type="email" class="form-control form-control-sm mw-200" placeholder="last.first@gigei.jp" value="{{gsuit}}" name="gsuit" id='gsuit' onpaste="return false" autocomplete="off">
+				<div class="input-group-append">
+				    <button class="btn btn-info" type="submit" id="button-addon2">Add</button>
+			  	</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+<main>
+	<div class="js-sticky-table">
+		<table class="datatable table-edit table-remove-row maintable txt-small w-100 ">
+			<thead>
+				<tr class="sticky-row">
+					<th class="sticky-cell w-10 no-break" scope="col">No.</th>
+					<th class="sticky-cell w-40 no-break" scope="col">Name</th>
+					<th class="sticky-cell w-40 no-break" scope="col">G-Suite</th>
+					<th class="sticky-cell w-10 no-sort" scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each list}}
+					{{#ifNotEquals ../mygsuit this.gsuit}}
+					<tr>
+						<td class="text-center order">{{math @index "+" 1}}</td>
+						<td class="truncate"><span onclick="getIDToUpdateName('{{this._id}}','{{this.name}}')" {{#ifNotEquals "admin" this.role}} class="name-edit" {{/ifNotEquals}}>{{this.name}}</span></td>
+						<td class="truncate"><span onclick="getIDToUpdateGSuit('{{this._id}}','{{this.gsuit}}')" {{#ifNotEquals "admin" this.role}} class="g-suite-edit" {{/ifNotEquals}}>{{this.gsuit}}</span></td>
+						<td class="text-center">
+							{{#ifNotEquals "admin" this.role}}
+							<button onclick="getIDAndDelete('{{this._id}}')" class="btn btn-xs btn-danger btn-delete" data-toggle="modal" data-target="#deleteModal">Delete</button>
+							{{/ifNotEquals}}
+						</td>
+					</tr>
+					{{/ifNotEquals}}
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+</main>
+<!-- modal -->
+<div class="modal fade p-0" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header py-2">
+				<h5 class="modal-title"><span class="oi mr-1" data-glyph="warning"></span>Warning</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body py-4">Are you sure want to deleted?</div>
+			<div class="modal-footer py-2">
+				<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"><span class="oi mr-1" data-glyph="x"></span>Cancel</button>
+				<button type="button" class="btn btn-sm btn-primary btn-confirm-del" onclick="getIDAndDelete()"><span class="oi mr-1" data-glyph="check"></span>OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade p-0" id="specialCharacterModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header py-2">
+				<h5 class="modal-title"><span class="oi mr-1" data-glyph="warning"></span>Warning</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body py-4">{{errSpecial}}</div>
+			<div class="modal-footer py-2">
+				<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"><span class="oi mr-1" data-glyph="x"></span>Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade p-0" id="errModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header py-2">
+				<h5 class="modal-title"><span class="oi mr-1" data-glyph="warning"></span>Warning</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body py-4">{{textErr}}</div>
+			<div class="modal-footer py-2">
+				<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal"><span class="oi mr-1" data-glyph="x"></span>Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal -->
+<input type="hidden" value="{{errExist}}" name="errExist">
+
+<script>
+	var idToDelete;
+	var idToUpdate;
+	var editValue;
+	var editString;
+	var specialCharacter = "%\></\"'*[^&;:]`?#$(){}|!,";
+
+	function getIDAndDelete(id) {
+		if(id) {
+			idToDelete = id;
+		} else {
+			let currentURL = window.location.href;
+			window.location.href = currentURL + '/delete/' + idToDelete;
+		}
+	}
+
+	function getIDToUpdateName(id,name) {
+		editString = "name";
+		idToUpdate = id;
+		editValue = name;
+	}
+
+	function getIDToUpdateGSuit(id,gsuit) {
+		editString = "gsuit";
+		idToUpdate = id;
+		editValue = gsuit;
+	}
+
+	function edit() {
+		let result = $(".editable-input input").val();
+		if (result == "") {
+			result = "empty";
+		} else {
+			if (result != editValue) {
+				if (result === undefined) {
+					$("#cancelEdit").click();
+					return;
+				}
+				let isSpecial = checkForSpecialChar(result);
+				if(isSpecial == true) {
+					$('#specialCharacterModal').modal('show');
+					$("#cancelEdit").click();
+					return;
+				}
+			} else {
+				$("#cancelEdit").click();
+				return;
+			}
+		}
+		let currentURL = window.location.href;
+		if (editString == "name") {
+			window.location.href = currentURL + '/updateName/' + idToUpdate + '/' + result;
+		} else if (editString == "gsuit") {
+			window.location.href = currentURL + '/updateGSuit/' + idToUpdate + '/' + result;
+		}
+	}
+
+	function enterEventEdit() {
+		$(document).on('keypress',function(e) {
+			if(e.which == 13) {
+				edit();
+			}
+		});
+	}
+
+	function checkForSpecialChar(string) {
+		for (i = 0; i < specialCharacter.length; i++) {
+			if(string.indexOf(specialCharacter[i]) > -1){
+				return true
+			}
+		}
+		return false;
+	}
+
+	document.getElementById("name").onkeypress = function(e) {
+		var chr = String.fromCharCode(e.which);
+		if (specialCharacter.indexOf(chr) >= 0)
+			return false;
+	};
+
+	document.getElementById("gsuit").onkeypress = function(e) {
+		var chr = String.fromCharCode(e.which);
+		if (specialCharacter.indexOf(chr) >= 0)
+			return false;
+	};
+
+	$(document).ready( function() {
+		let currentURL = window.location.href;
+		var errExist = $("input[name=errExist]").val();
+		window.history.pushState("object or string", "Title", "/user-management");
+
+		if (errExist != 'normal') {
+			$('#errModal').modal('show');
+		}
+		if (performance.navigation.type == 1) {
+			currentURL = currentURL.replace('/user-management','/');
+			window.location.href = currentURL;
+		}
+	});
+</script>

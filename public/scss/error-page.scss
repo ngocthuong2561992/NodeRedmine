@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+// Core variables and mixins
+@import "functions";
+@import "variables";
+@import "mixins";
+
+// custom bootstrap
+@import "custom/open-iconic";
+
+.error {
+	&-wrapper {
+		height: 100vh;
+		.oi {font-size: 4rem;}
+		h1 {
+			font-size: 2rem;
+			margin-bottom: 1rem;
+		}
+	}
+}

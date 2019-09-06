@@ -1,0 +1,10 @@
+@charset "UTF-8";
+header {
+	align-items: center;
+	background-color: bg-color('white');
+	padding: .5rem 0;
+	.logo img {
+		width: convert-rem(150);
+		height: convert-rem(30);
+	}
+}
